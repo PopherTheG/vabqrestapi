@@ -63,7 +63,7 @@
         $this->_responseData['data'] = $this->_data;
       }
 
-      //return it to browser as JSON
+      // return it to client as JSON
       echo json_encode($this->_responseData);
     }
   }
