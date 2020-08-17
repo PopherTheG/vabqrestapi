@@ -60,7 +60,7 @@
 
         $returnData = array();
         $returnData['rows_returned'] = $rowCount;
-        $returnData['sentences'] = $contentArray;
+        $returnData['contents'] = $contentArray;
 
         $response = new Response();
         $response->setHttpStatusCode(200);
