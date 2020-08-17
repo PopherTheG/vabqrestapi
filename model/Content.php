@@ -76,23 +76,21 @@
 
 
     public function decomposedSSentences() {
-      $sentences = $this->getSSentences(); // get long string of sentences.Sentences are demilited by '|||'
-      $sentencesArray = explode("|||", $sentences);
-      $sentenceArray = array();
-      /* 
-        0 -> sentenceID
-        1 -> dialogueConversation
-        2 -> speaker
-        3 -> englishText
-        4 -> koreanText
-        5 -> timeMarking
-      */
+      $sentences = $this->getSSentences(); // get long string of sentences. Sentences are demilited by '|||'
+      $sentencesArray = explode("|||", $sentences); // get individual sentences
+      $sentenceArray = array(); // holds components of each sentences
       foreach($sentencesArray as $sentence) {
         $sentenceComponents = explode("||", $sentence);
-        // $sentenceComponentsClean = str_replace("\r\n", "", $sentenceComponents);
-        // $sentenceComponentsCleaner = str_replace("\\", "", $sentenceComponentsClean);
         $sentenceArray[] = [
-          'sentenceID' => str_replace("\r\n  ", "", $sentenceComponents[0]),
+          /* 
+            0 -> sentenceID
+            1 -> dialogueConversation
+            2 -> speaker
+            3 -> englishText
+            4 -> koreanText
+            5 -> timeMarking
+          */
+          'sentenceID' => str_replace("\r\n", "", $sentenceComponents[0]),
           'dialogueConversation' => $sentenceComponents[1],
           'speaker' => $sentenceComponents[2],
           'englishText' => $sentenceComponents[3],
