@@ -9,6 +9,7 @@
     private $_setID;
     private $_sName;
     private $_sSentences;
+    // private $_decomposedSSentences = array(); // holds an array of sentence
 
     public function __construct($id, $setID, $sName, $sSentences) {
       $this->setID($id);
@@ -32,7 +33,7 @@
     public function getSSentences() {
       return $this->_sSentences;
     }
-
+    
     public function setID($id) {
       // throw error if id is null and is not not in range of INT data type
       if ($id === null || !is_numeric($id) || $id <= 0 || $id > 4294967295) {
@@ -70,32 +71,47 @@
       $this->_sSentences = $sSentences;
     }
 
+
+    // helper methods
+
+
+    public function decomposedSSentences() {
+      $sentences = $this->getSSentences(); // get long string of sentences.Sentences are demilited by '|||'
+      $sentencesArray = explode("|||", $sentences);
+      $sentenceArray = array();
+      /* 
+        0 -> sentenceID
+        1 -> dialogueConversation
+        2 -> speaker
+        3 -> englishText
+        4 -> koreanText
+        5 -> timeMarking
+      */
+      foreach($sentencesArray as $sentence) {
+        $sentenceComponents = explode("||", $sentence);
+        // $sentenceComponentsClean = str_replace("\r\n", "", $sentenceComponents);
+        // $sentenceComponentsCleaner = str_replace("\\", "", $sentenceComponentsClean);
+        $sentenceArray[] = [
+          'sentenceID' => str_replace("\r\n  ", "", $sentenceComponents[0]),
+          'dialogueConversation' => $sentenceComponents[1],
+          'speaker' => $sentenceComponents[2],
+          'englishText' => $sentenceComponents[3],
+          'koreanText' => $sentenceComponents[4],
+          'timeMarking' => $sentenceComponents[5],
+        ];
+      }
+      return $sentenceArray;
+    }
+
     // helper method to convert to array so it can be easily formatted to JSON
     public function returnContentAsArray() {
-      $content = array();
-      $content['id'] = $this->getID();
-      $content['setID'] = $this->getSetID();
-      $content['sName'] = $this->getSName();
-      $content['sSentences'] = $this->getSSentences();
-      return $content;
-
-      // This is my planned return, but first i want to check first if i can retrieve data from the database
-      // before adding logic
-
-      /*$content = [
+      $content = [
         'id' => $this->getID(),
         'setID' => $this->getSetID(),
         'sName' => $this->getSName(),
-        'sSentences' => [
-          'sentenceID' => 'to fill',
-          'dialogueConversation' => 'to fill',
-          'speaker' => 'to fill',
-          'englishText' => 'to fill',
-          'koreanText' => 'to fill',
-          'timeMarking' => 'to fill
-          ]
-        ];
-        
-        return $content;*/
+        'sSentences' => $this->decomposedSSentences()
+      ];
+
+      return $content;
     }
   }
