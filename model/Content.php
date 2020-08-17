@@ -54,7 +54,7 @@
 
     public function setSName($sName) {
       // throw error if sName is not in range of TEXT data type character limit
-      if ($sName === null || strlen($sName) < 0 || strlen($title > 65535)) {
+      if ($sName === null || strlen($sName) < 0 || strlen($sName > 65535)) {
         throw new ContentException("Content sName error");
       }
 
@@ -63,7 +63,7 @@
 
     public function setSSentences($sSentences) {
       // throw error if sName is not in range of TEXT data type character limit
-      if ($sSentences === null || strlen($sName) < 0 || strlen($title > 16777215)) {
+      if ($sSentences === null || strlen($sSentences) < 0 || strlen($sSentences > 16777215)) {
         throw new ContentException("Content sSentences error");
       }
 
